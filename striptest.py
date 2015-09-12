@@ -1,6 +1,6 @@
 #load the AllPixel driver. Works for LEDStrip AND LEDMatrix
 from bibliopixel.drivers.serial_driver import *
-    driver = DriverSerial(num=10, type=LEDTYPE.LPD8806)
+driver = DriverSerial(num=10, type=LEDTYPE.LPD8806)
 #import the bibliopixel base classes
 from bibliopixel import *
 from bibliopixel.animation import *
