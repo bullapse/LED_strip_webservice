@@ -2,9 +2,6 @@ import json
 
 import cherrypy
 
-import bibilopixel
-
-
 class StringGeneratorWebService(object):
   exposed = True
   default_color = "hex_white"  # white
