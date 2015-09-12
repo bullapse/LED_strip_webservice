@@ -5,24 +5,19 @@ import cherrypy
 import bibilopixel
 
 
-
 class StringGeneratorWebService(object):
-    exposed = True
-    default_color = "hex_white" # white
-    default_patter = "solid" # solid color
-    LED_strip_size = 32
+  exposed = True
+  default_color = "hex_white"  # white
+  default_patter = "solid"  # solid color
+  LED_strip_size = 32
 
-    #Load driver for the AllPixel
-    from bibliopixel.drivers.serial_driver import *
-    #set number of pixels & LED type here
-    driver = DriverSerial(num = 10, type = LEDTYPE.WS2812B)
-    #load the LEDStrip class
-    from bibliopixel.led import *
-    led = LEDStrip(driver)
-
-    #load channel test animation
-    from bibliopixel.animation import StripChannelTest
-    anim = StripChannelTest(led)
+  # Load driver for the AllPixel
+  from bibliopixel.drivers.serial_driver import *
+  # set number of pixels & LED type here
+  driver = DriverSerial(num=10, type=LEDTYPE.WS2812B)
+  # load the LEDStrip class
+  from bibliopixel.led import *
+  led = LEDStrip(driver)
 
   @cherrypy.tools.accept(media='applicatoin/json')
   def GET(self):
@@ -37,25 +32,24 @@ class StringGeneratorWebService(object):
     default_patter = "solid"  # solid color
 
     power = json_req['status']  # if power is false, turn off
+    color = json_req['color']
+    pattern = json_req['pattern']
     if power is False:
       print("Turning off the LED\n")
       # make call to turn off the LED
-
+      led.all_off()
+      led.update()
       # if turn off successful, set result = 'success'
       result = 'success'
-    else:
-      color = json_req['color']
-      pattern = json_req['pattern']
-      # do a check for a valid hex color
-
-      # change the color
-      print("Changing the color to: " + color + "\n")
-
-      # check if the pattern is in the list of patterns
-      print("Changing the pattern to: " + color + "\n)
-
-      # change the pattern to run
-
+    elif color is not None:
+      R = color['R']
+      G = color['G']
+      B = color['B']
+      led.fillRGB(R, G, B, 0, LED_strip_size - 1)
+      let.update()
+      result = 'success'
+    elif pattern is not None:
+      # To be implemented
       # if change was successful, set reslut = 'success'
       result = 'success'
 
@@ -76,8 +70,7 @@ class StringGeneratorWebService(object):
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.sessions.on': True,
             'tools.response_headers.on': True,
-            'tools.response_heade
-rs.headers': [('Content-Type', 'text/plain')],
+            'tools.response_headeer.headers.headers': [('Content-Type', 'text/plain')],
         }
     }
     cherrypy.quickstart(StringGeneratorWebService(), '/', conf)
