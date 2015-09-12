@@ -14,7 +14,7 @@ class StringGeneratorWebService(object):
   # Load driver for the AllPixel
   from bibliopixel.drivers.serial_driver import *
   # set number of pixels & LED type here
-  driver = DriverSerial(num=10, type=LEDTYPE.WS2812B)
+  driver = DriverSerial(num=10, type=LEDTYPE.LPD8806)
   # load the LEDStrip class
   from bibliopixel.led import *
   led = LEDStrip(driver)
